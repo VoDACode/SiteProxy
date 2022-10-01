@@ -1,0 +1,14 @@
+{
+    "ProxyErrorsServerPort": 8001,
+    "ProxyServePort": 80,
+    "api": {
+        "isEnabled": true,
+        "key": ""
+    },
+    "routers": [
+        {
+            "from": "your-host.com",
+            "to": "http://example.com:8080"
+        }
+    ]
+}
