@@ -48,7 +48,8 @@ mainApp.use(
                 req.headers["code"] = 500;
                 return `http://${host}:${config.ProxyErrorsServerPort}/`;
             }
-
+            req.headers["hostname"] = host;
+            req.headers["host"] = host;
             return item.to;
         }
     })
