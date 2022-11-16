@@ -8,6 +8,13 @@ const errorProxy = express();
 
 let config = configDynamic.util.loadFileConfigs(path.join(__dirname, "config"));
 
+
+console.log("Router table:");
+for (let i = 0; i < config.routers.length; i++) {
+    console.log(config.routers[i].from + " -> " + config.routers[i].to);
+    config.routers[i].from = config.routers[i].from.replace('*', '[a-zA-Z0-9-]*');
+}
+
 let servers = new Map();
 checkServersStatus();
 
@@ -25,7 +32,13 @@ mainApp.use(
             if (!routers || !Array.isArray(routers))
                 throw new Error('Incorrect config parameter "routers"');
 
-            const item = routers.find(p => p.from == host);
+            const item = routers.find((p) => {
+                let reg = new RegExp(p.from);
+                if (reg.exec(host) == host) {
+                    return true;
+                }
+                return false;
+            });
             if (!item || servers.size == 0) {
                 req.headers["code"] = 404;
                 return `http://${host}:${config.ProxyErrorsServerPort}/`;
